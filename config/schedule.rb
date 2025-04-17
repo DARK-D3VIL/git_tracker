@@ -16,12 +16,12 @@
 # every 4.days do
 #   runner "AnotherModel.prune_old_records"
 # end
-env :PATH, '/home/dark/.rbenv/shims:/home/dark/.rbenv/bin:/usr/local/bin:/usr/bin:/bin'
 set :output, "./log/cron.log"
+env :PATH, ENV['PATH']
 
-every 1.minute do
+every 1.day do
   # runner "Puts 'Hello World'"
-  runner "GitHubService.new.fetch_prs"
+  rake 'batch:sync_data', environment: 'development'
 end
 
 
