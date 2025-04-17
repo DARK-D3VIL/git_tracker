@@ -1,55 +1,29 @@
-<h2>Developer Matrices</h2>
-<table>
-  <tr><th>PR ID</th><th>GitHub ID</th><th>LOC</th></tr>
-  <% @developer_matrices.each do |dm| %>
-    <tr>
-      <td><%= dm.pr_id %></td>
-      <td><%= dm.github_id %></td>
-      <td><%= dm.LOC %></td>
-    </tr>
-  <% end %>
-</table>
+<%= form_with url: dashboard_index_path do |f| %>
+  <%= f.label :range, "Time Range:" %>
+  <%= f.select :range, [["All Time", "all"], ["Last 7 Days", "7days"], ["Last 30 Days", "30days"]]%>
 
-<h2>Employees</h2>
-<table>
-  <tr><th>GitHub ID</th><th>Name</th><th>Dev Score</th><th>Rev Score</th></tr>
-  <% @employees.each do |e| %>
-    <tr>
-      <td><%= e.github_id %></td>
-      <td><%= e.name %></td>
-      <td><%= e.dev_score %></td>
-      <td><%= e.rev_score %></td>
-    </tr>
-  <% end %>
-</table>
+  <%= f.label :status, "PR Status:" %>
+  <%= f.select :status, [["All", "all"], ["Closed", "closed"]]%>
 
-<h2>Pull Requests</h2>
-<table>
-  <tr><th>PR ID</th><th>Status</th><th>LOC</th><th>Created</th><th>Merged</th><th>closed</th><th>Review cnt</th><th>Node ID</th></tr>
-  <% @pull_requests.each do |pr| %>
-    <tr>
-      <td><%= pr.pr_id %></td>
-      <td><%= pr.status %></td>
-      <td><%= pr.LOC %></td>
-      <td><%= pr.pr_created_at %></td>
-      <td><%= pr.pr_merged_at %></td>
-      <td><%= pr.pr_closed_at %></td>
-      <td><%= pr.review_counts %></td>
-      <td><%= pr.pr_node_id %></td>
-    </tr>
-  <% end %>
-</table>
+  <%= f.label :sort_by, "Sort By:" %>
+  <%= f.select :sort_by, [["Development Score", "dev_score"], ["Review Score", "rev_score"]] %>
 
-<h2>Reviews</h2>
+  <%= f.submit "Apply" %>
+<% end %>
+
+
+
 <table>
-  <tr><th>Review ID</th><th>PR ID</th><th>GitHub ID</th><th>Created at</th><th>next commit at</th></tr>
-  <% @reviews.each do |r| %>
-    <tr>
-      <td><%= r.review_id %></td>
-      <td><%= r.pr_id %></td>
-      <td><%= r.github_id %></td>
-      <td><%= r.rev_created_at %></td>
-      <td><%= r.next_commit_at %></td>
-    </tr>
+  <tr>
+    <th>Name</th>
+    <th>Github ID</th>
+    <th>Dev Score</th>
+  </tr>
+  <% @employees.each do |emp| %>
+  <tr>
+    <td><%= emp.name %></td>
+    <td><%= emp.github_id %></td>
+    <td><%= emp.dev_score %></td>
+    <td><%= emp.rev_score %></td>
   <% end %>
 </table>
