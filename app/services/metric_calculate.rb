@@ -7,10 +7,12 @@ class MetricCalculate
 
     pr_ids = []
     for matrix in @developer_matrices
-      pr_ids.append(matrix.pr_id)
+      if matrix.pr_id.present?
+        pr_ids.append(matrix.pr_id)
+      end
     end
 
-    @dev_pr = pull_requests.where("pr_id" => pr_ids)
+    @dev_pr = pull_requests.where(pr_id: pr_ids)
   end
 
   def calculate
@@ -134,7 +136,12 @@ class MetricCalculate
   end
 
   def cal_merge_speed
-    merged_prs = @dev_pr.where("pr_merged_at IS NOT NULL")
+    if @dev_pr.empty?
+      return 0
+    end
+
+    merged_prs = @dev_pr.where.not(pr_merged_at: nil)
+
     if merged_prs.empty?
       return 0
     end

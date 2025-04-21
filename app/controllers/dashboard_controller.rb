@@ -66,8 +66,8 @@ class DashboardController < ApplicationController
     @reviews = Review.all
 
     if time_range.present?
-      @pull_requests = @pull_requests.where("pr_created_at >= #{time_range}")
-      @reviews = @reviews.where("rev_created_at >= #{time_range}")
+      @pull_requests = @pull_requests.where("pr_created_at >= ?", time_range)
+      @reviews = @reviews.where("rev_created_at >= ?", time_range)
     end
 
     if status == "closed"
