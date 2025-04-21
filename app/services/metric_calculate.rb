@@ -46,15 +46,15 @@ class MetricCalculate
     @employee.save!
 
     {
-      dev_score: @employee.dev_score,
-      rev_score: @employee.rev_score,
-      merge_speed: @merge_speed,
-      churn_score: @churn_score,
-      code_quality: @code_quality,
-      review_coverage: @review_coverage,
-      response_time: @review_response_time,
-      closing_speed: @closing_speed,
-      engagement_score: @engagement
+      "dev_score" => @employee.dev_score,
+      "rev_score" => @employee.rev_score,
+      "merge_speed" => @merge_speed,
+      "churn_score" => @churn_score,
+      "code_quality" => @code_quality,
+      "review_coverage" => @review_coverage,
+      "response_time" => @review_response_time,
+      "closing_speed" => @closing_speed,
+      "engagement_score" => @engagement
     }
   end
 
