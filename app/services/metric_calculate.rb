@@ -152,7 +152,12 @@ class MetricCalculate
   end
 
   def cal_response_to_feedback
-    @dev_rev = @reviews.where(pr_id: @developer_matrices.pluck(:pr_id))
+    pr_ids = []
+    for matrix in @developer_matrices
+      pr_ids.append(matrix.pr_id)
+    end
+
+    @dev_rev = @reviews.where(pr_id: pr_ids)
     if @dev_rev.empty?
       return 0
     end
