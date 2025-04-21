@@ -10,7 +10,7 @@ class MetricCalculate
       pr_ids.append(matrix.pr_id)
     end
 
-    @dev_pr = pull_requests.where(pr_id: pr_ids)
+    @dev_pr = pull_requests.where("pr_id" => pr_ids)
   end
 
   def calculate
@@ -144,7 +144,7 @@ class MetricCalculate
       mat = @developer_matrices.find { |m| m.pr_id == pr.pr_id }
       loc=1
       if mat && mat.LOC != 0
-        loc = mat&.LOC
+        loc = mat.LOC
       end
       total += (time_diff(pr.pr_merged_at,pr.pr_created_at)/loc)
     end
