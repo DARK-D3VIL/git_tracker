@@ -4,7 +4,13 @@ class MetricCalculate
     @reviews = reviews
     @developer_matrices = developer_matrices.where(github_id: employee.github_id)
     @pull_requests = pull_requests
-    @dev_pr = pull_requests.where(pr_id: developer_matrices.pluck(:pr_id))
+
+    pr_ids = []
+    for matrix in @developer_matrices
+      pr_ids.append(matrix.pr_id)
+    end
+
+    @dev_pr = pull_requests.where(pr_id: pr_ids)
   end
 
   def calculate
