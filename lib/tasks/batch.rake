@@ -1,4 +1,3 @@
-require Rails.root.join("app/services/github_service")
 namespace :batch do
   desc "sync_data"
   task sync_data: :environment do

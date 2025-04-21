@@ -1,4 +1,4 @@
-<%= form_with url: dashboard_index_path do |f| %>
+<%= form_with url: dashboard_index_path, method: :get do |f| %>
   <%= f.label :range, "Time Range:" %>
   <%= f.select :range, [["All Time", "all"], ["Last 7 Days", "7days"], ["Last 30 Days", "30days"]]%>
 
@@ -11,19 +11,25 @@
   <%= f.submit "Apply" %>
 <% end %>
 
+<br>
 
+<p><%= link_to 'View Raw Data', dashboard_raw_path %></p>
+
+<br>
 
 <table>
   <tr>
     <th>Name</th>
     <th>Github ID</th>
     <th>Dev Score</th>
+    <th>Review Score</th>
   </tr>
   <% @employees.each do |emp| %>
   <tr>
     <td><%= emp.name %></td>
     <td><%= emp.github_id %></td>
-    <td><%= emp.dev_score %></td>
-    <td><%= emp.rev_score %></td>
+    <td><%= emp.dev_score.round(2) %></td>
+    <td><%= emp.rev_score.round(2) %></td>
+    <td><%= button_to "View Metrics", dashboard_show_path(emp.id), method: :get %></td>
   <% end %>
 </table>

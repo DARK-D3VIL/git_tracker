@@ -1,6 +1,3 @@
-require 'httparty'
-require 'dotenv/load'
-
 class GithubService
   include HTTParty
   base_uri 'https://api.github.com'

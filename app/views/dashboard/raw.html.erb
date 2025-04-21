@@ -1,0 +1,98 @@
+<h1>Raw Data</h1>
+
+<p><%= link_to 'Back to Dashboard', dashboard_index_path %></p>
+
+<h2>Employees</h2>
+<table border="1">
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>GitHub ID</th>
+    <th>Dev Score</th>
+    <th>Review Score</th>
+    <th>Created At</th>
+  </tr>
+  <% @employees.each do |emp| %>
+    <tr>
+      <td><%= emp.id %></td>
+      <td><%= emp.name %></td>
+      <td><%= emp.github_id %></td>
+      <td><%= emp.dev_score %></td>
+      <td><%= emp.rev_score %></td>
+      <td><%= emp.created_at %></td>
+    </tr>
+  <% end %>
+</table>
+
+<h2>Pull Requests</h2>
+<table border="1">
+  <tr>
+    <th>ID</th>
+    <th>PR ID</th>
+    <th>PR Node ID</th>
+    <th>Status</th>
+    <th>Created At</th>
+    <th>Merged At</th>
+    <th>Closed At</th>
+    <th>LOC</th>
+    <th>Review Count</th>
+  </tr>
+  <% @prs.each do |pr| %>
+    <tr>
+      <td><%= pr.id %></td>
+      <td><%= pr.pr_id %></td>
+      <td><%= pr.pr_node_id %></td>
+      <td><%= pr.status %></td>
+      <td><%= pr.pr_created_at %></td>
+      <td><%= pr.pr_merged_at %></td>
+      <td><%= pr.pr_closed_at %></td>
+      <td><%= pr.LOC %></td>
+      <td><%= pr.review_counts %></td>
+    </tr>
+  <% end %>
+</table>
+
+<h2>Reviews</h2>
+<table border="1">
+  <tr>
+    <th>ID</th>
+    <th>Review ID</th>
+    <th>Review Node ID</th>
+    <th>GitHub ID</th>
+    <th>PR ID</th>
+    <th>Review Created At</th>
+    <th>Next Commit At</th>
+  </tr>
+  <% @reviews.each do |rev| %>
+    <tr>
+      <td><%= rev.id %></td>
+      <td><%= rev.review_id %></td>
+      <td><%= rev.review_node_id %></td>
+      <td><%= rev.github_id %></td>
+      <td><%= rev.pr_id %></td>
+      <td><%= rev.rev_created_at %></td>
+      <td><%= rev.next_commit_at %></td>
+    </tr>
+  <% end %>
+</table>
+
+
+<h2>Developer Matrix</h2>
+<table border="1">
+  <tr>
+    <th>ID</th>
+    <th>PR ID</th>
+    <th>GitHub ID</th>
+    <th>LOC</th>
+    <th>Created At</th>
+  </tr>
+  <% @dev_matrices.each do |dm| %>
+    <tr>
+      <td><%= dm.id %></td>
+      <td><%= dm.pr_id %></td>
+      <td><%= dm.github_id %></td>
+      <td><%= dm.LOC %></td>
+      <td><%= dm.created_at %></td>
+    </tr>
+  <% end %>
+</table>
