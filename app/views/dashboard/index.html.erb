@@ -30,6 +30,6 @@
     <td><%= emp.github_id %></td>
     <td><%= emp.dev_score.round(2) %></td>
     <td><%= emp.rev_score.round(2) %></td>
-    <td><%= button_to "View Metrics", dashboard_show_path(emp.id), method: :get %></td>
+    <td><%= button_to "View Metrics", dashboard_show_path(emp.id), method: :get, class: "btn btn-secondary" %></td>
   <% end %>
 </table>

@@ -14,9 +14,16 @@
 
 <h3>Metrics:</h3>
 <ul>
-  <% @metrics.each do |key, value| %>
-    <li><%= key.to_s.humanize %>: <%= value.round(2) %></li>
-  <% end %>
+  <li>Developer Score: <%= @employee.dev_score.round(2) %></li>
+  <li>Reviewer Score: <%= @employee.rev_score.round(2) %></li>
+  <li>Merge Speed: <%= @employee.merge_speed.round(2) %></li>
+  <li>Churn Score: <%= @employee.churn_score.round(2) %></li>
+  <li>Code Quality: <%= @employee.code_quality.round(2) %></li>
+  <li>Review Coverage: <%= @employee.review_coverage.round(2) %></li>
+  <li>Response Time: <%= @employee.response_time.round(2) %></li>
+  <li>Closing Speed: <%= @employee.closing_speed.round(2) %></li>
+  <li>Engagement Score: <%= @employee.engagement_score.round(2) %></li>
+  <li>Response to Feedback: <%= @employee.response_to_feedback.round(2) %></li>
 </ul>
 
 <%= link_to "Back to Dashboard", dashboard_index_path, class: "btn btn-secondary" %>

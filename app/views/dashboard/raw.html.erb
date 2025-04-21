@@ -10,7 +10,14 @@
     <th>GitHub ID</th>
     <th>Dev Score</th>
     <th>Review Score</th>
-    <th>Created At</th>
+    <th> Merge Speed</th>
+    <th> Churn Score </th>
+    <th> Code Quality </th>
+    <th> Response to Feedback </th>
+    <th> Review Coverage </th>
+    <th> Response Time </th>
+    <th> Closing Speed </th>
+    <th> Engagement Score </th>
   </tr>
   <% @employees.each do |emp| %>
     <tr>
@@ -19,7 +26,14 @@
       <td><%= emp.github_id %></td>
       <td><%= emp.dev_score %></td>
       <td><%= emp.rev_score %></td>
-      <td><%= emp.created_at %></td>
+      <td><%= emp.merge_speed %></td>
+      <td><%= emp.churn_score %></td>
+      <td><%= emp.code_quality %></td>
+      <td><%= emp.response_to_feedback %></td>
+      <td><%= emp.review_coverage %></td>
+      <td><%= emp.response_time %></td>
+      <td><%= emp.closing_speed %></td>
+      <td><%= emp.engagement_score %></td>
     </tr>
   <% end %>
 </table>
