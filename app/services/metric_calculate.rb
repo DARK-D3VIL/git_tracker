@@ -52,22 +52,6 @@ class MetricCalculate
     @employee.save!
   end
 
-  def cal_dev_met
-    if @dev_pr.empty?
-      return 0
-    end
-
-    res = 0.30 * @code_quality + 0.15 * @churn_score
-     if @merge_speed > 0
-      res += 0.30 * (100 - @merge_speed/10000)
-     end
-     if @response_to_feedback > 0
-      res += 0.25 * (100 - @response_to_feedback/10000)
-     end
-
-     res
-  end
-
   def cal_churn_score
     if @developer_matrices.empty?
       return 0
@@ -161,18 +145,6 @@ class MetricCalculate
       end
     end
     total / @dev_rev.size.to_f
-  end
-
-  def cal_rev_met
-    res = 0.25 * @review_coverage + 0.25 * @engagement
-    if @closing_speed > 0
-      res += 0.30 * (100 - @closing_speed/100)
-    end
-    if @review_response_time > 0
-      res += 0.20 * (100 - @review_response_time/100)
-    end
-
-    res
   end
 
   def cal_review_coverage(relevant_prs)

@@ -1,11 +1,9 @@
-<h2><%= @employee.name %>'s Metrics</h2>
-
 <%= form_with url: dashboard_show_path(@employee.id), method: :get do |f| %>
   <%= f.label :range, "Time Range:" %>
-  <%= f.select :range, [["All Time", "all"], ["Last 7 Days", "7days"], ["Last 30 Days", "30days"]], selected: @range %>
+  <%= f.select :range, [["All Time", "all"], ["Last 7 Days", "7days"], ["Last 30 Days", "30days"]],  selected: params[:range] %>
 
   <%= f.label :status, "PR Status:" %>
-  <%= f.select :status, [["All", "all"], ["Closed", "closed"]], selected: @status %>
+  <%= f.select :status, [["Closed", "closed"], ["All", "all"]], selected: params[:status] %>
 
   <%= f.submit "Apply Filters" %>
 <% end %>
@@ -14,16 +12,17 @@
 
 <h3>Metrics:</h3>
 <ul>
-  <li>Developer Score: <%= @employee.dev_score.round(2) %></li>
-  <li>Reviewer Score: <%= @employee.rev_score.round(2) %></li>
-  <li>Merge Speed: <%= @employee.merge_speed.round(2) %></li>
-  <li>Churn Score: <%= @employee.churn_score.round(2) %></li>
-  <li>Code Quality: <%= @employee.code_quality.round(2) %></li>
-  <li>Review Coverage: <%= @employee.review_coverage.round(2) %></li>
-  <li>Response Time: <%= @employee.response_time.round(2) %></li>
-  <li>Closing Speed: <%= @employee.closing_speed.round(2) %></li>
-  <li>Engagement Score: <%= @employee.engagement_score.round(2) %></li>
-  <li>Response to Feedback: <%= @employee.response_to_feedback.round(2) %></li>
+  <li>Developer Score: <%= @employee.dev_score&.round(2) || 0 %></li>
+  <li>Reviewer Score: <%= @employee.rev_score&.round(2) || 0 %></li>
+  <li>Merge Speed: <%= @employee.merge_speed&.round(2) || 0 %></li>
+  <li>Churn Score: <%= @employee.churn_score&.round(2) || 0 %></li>
+  <li>Code Quality: <%= @employee.code_quality&.round(2) || 0 %></li>
+  <li>Review Coverage: <%= @employee.review_coverage&.round(2) || 0 %></li>
+  <li>Response Time: <%= @employee.response_time&.round(2) || 0 %></li>
+  <li>Closing Speed: <%= @employee.closing_speed&.round(2) || 0 %></li>
+  <li>Engagement Score: <%= @employee.engagement_score&.round(2) || 0 %></li>
+  <li>Response to Feedback: <%= @employee.response_to_feedback&.round(2) || 0 %></li>
 </ul>
 
-<%= link_to "Back to Dashboard", dashboard_index_path, class: "btn btn-secondary" %>
+<%= link_to "Back to Dashboard", dashboard_index_path(range: params[:range], status: params[:status]), class: "btn btn-secondary" %>
+
