@@ -13,15 +13,18 @@
           <li class="nav-item">
             <%= link_to 'Dashboard', root_path, class: "nav-link" %>
           </li>
+          <li class="nav-item">
+            <%= link_to 'Raw Data', dashboard_raw_path(range: session[:range], status: session[:status]), class: "nav-link" %>
+          </li>
         </ul>
 
-        <!-- Search and Sign out section aligned vertically -->
         <div class="d-flex align-items-center ms-auto gap-3">
-          <!-- Search bar -->
+        <% if controller_name == 'dashboard' && action_name == 'index' %>
           <form class="d-flex align-items-center" role="search" action="<%= root_path %>" method="get">
             <input class="form-control me-2" type="search" name="query" placeholder="Search Employee" aria-label="Search">
             <button class="btn btn-outline-light" type="submit">Search</button>
           </form>
+        <% end %>
 
           <!-- Sign Out Button -->
           <%= button_to "Sign out", destroy_user_session_path, method: :delete,

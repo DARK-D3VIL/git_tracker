@@ -1,25 +1,11 @@
 <h1 class="mb-4">Raw Data</h1>
 
-<p><%= link_to 'Back to Dashboard', dashboard_index_path, class: "btn btn-primary mb-4" %></p>
-
-<style>
-  thead th {
-    position: sticky;
-    top: 0;
-    background: #343a40;
-    color: white;
-    z-index: 1;
-  }
-</style>
-
-<!-- Employees Table -->
 <div class="card mb-5">
   <div class="card-header">
     <h2>Employees</h2>
   </div>
   <div class="card-body table-responsive" style="max-height: 600px; overflow-y: auto;">
     <table class="table table-striped table-bordered table-hover">
-      <thead class="thead-dark">
         <tr>
           <th>ID</th>
           <th>Name</th>
@@ -35,38 +21,34 @@
           <th>Closing Speed</th>
           <th>Engagement</th>
         </tr>
-      </thead>
-      <tbody>
-        <% @employees.first(30).each do |emp| %>
+        <% @employees.each do |emp| %>
           <tr>
             <td><%= emp.id %></td>
             <td><%= emp.name %></td>
             <td><%= emp.github_id %></td>
-            <td><%= number_with_precision(emp.dev_score, precision: 2) %></td>
-            <td><%= number_with_precision(emp.rev_score, precision: 2) %></td>
-            <td><%= number_with_precision(emp.merge_speed, precision: 2) %></td>
-            <td><%= number_with_precision(emp.churn_score, precision: 2) %></td>
-            <td><%= number_with_precision(emp.code_quality, precision: 2) %></td>
-            <td><%= number_with_precision(emp.response_to_feedback, precision: 2) %></td>
-            <td><%= number_with_precision(emp.review_coverage, precision: 2) %></td>
-            <td><%= number_with_precision(emp.response_time, precision: 2) %></td>
-            <td><%= number_with_precision(emp.closing_speed, precision: 2) %></td>
-            <td><%= number_with_precision(emp.engagement_score, precision: 2) %></td>
+            <td><%= emp.dev_score&.round(2) || 0%></td>
+            <td><%= emp.rev_score&.round(2) || 0 %></td>
+            <td><%= emp.merge_speed&.round(2) || 0 %></td>
+            <td><%= emp.churn_score&.round(2) || 0 %></td>
+            <td><%= emp.code_quality&.round(2) || 0 %></td>
+            <td><%= emp.response_to_feedback&.round(2) || 0 %></td>
+            <td><%= emp.review_coverage&.round(2) || 0 %></td>
+            <td><%= emp.response_time&.round(2) || 0 %></td>
+            <td><%= emp.closing_speed&.round(2) || 0 %></td>
+            <td><%= emp.engagement_score&.round(2) || 0 %></td>
           </tr>
         <% end %>
-      </tbody>
     </table>
   </div>
 </div>
 
-<!-- Pull Requests Table -->
+
 <div class="card mb-5">
   <div class="card-header">
     <h2>Pull Requests</h2>
   </div>
   <div class="card-body table-responsive" style="max-height: 600px; overflow-y: auto;">
     <table class="table table-striped table-bordered table-hover">
-      <thead>
         <tr>
           <th>ID</th>
           <th>PR ID</th>
@@ -78,9 +60,7 @@
           <th>LOC</th>
           <th>Reviews</th>
         </tr>
-      </thead>
-      <tbody>
-        <% @prs.first(30).each do |pr| %>
+        <% @pull_requests.each do |pr| %>
           <tr>
             <td><%= pr.id %></td>
             <td><%= pr.pr_id %></td>
@@ -93,19 +73,16 @@
             <td><%= pr.review_counts %></td>
           </tr>
         <% end %>
-      </tbody>
     </table>
   </div>
 </div>
 
-<!-- Reviews Table -->
 <div class="card mb-5">
   <div class="card-header">
     <h2>Reviews</h2>
   </div>
   <div class="card-body table-responsive" style="max-height: 600px; overflow-y: auto;">
     <table class="table table-striped table-bordered table-hover">
-      <thead>
         <tr>
           <th>ID</th>
           <th>Review ID</th>
@@ -115,9 +92,7 @@
           <th>Created</th>
           <th>Next Commit</th>
         </tr>
-      </thead>
-      <tbody>
-        <% @reviews.first(30).each do |rev| %>
+        <% @reviews.each do |rev| %>
           <tr>
             <td><%= rev.id %></td>
             <td><%= rev.review_id %></td>
@@ -128,19 +103,16 @@
             <td><%= rev.next_commit_at&.strftime("%b %d, %Y %H:%M") %></td>
           </tr>
         <% end %>
-      </tbody>
     </table>
   </div>
 </div>
 
-<!-- Developer Matrix Table -->
 <div class="card mb-5">
   <div class="card-header">
     <h2>Developer Matrix</h2>
   </div>
   <div class="card-body table-responsive" style="max-height: 600px; overflow-y: auto;">
     <table class="table table-striped table-bordered table-hover" style="min-width: max-content;">
-      <thead>
         <tr>
           <th>ID</th>
           <th>PR ID</th>
@@ -148,9 +120,7 @@
           <th>LOC</th>
           <th>Created</th>
         </tr>
-      </thead>
-      <tbody>
-        <% @dev_matrices.first(30).each do |dm| %>
+        <% @dev_matrices.each do |dm| %>
           <tr>
             <td><%= dm.id %></td>
             <td><%= dm.pr_id %></td>
@@ -159,7 +129,6 @@
             <td><%= dm.created_at.strftime("%b %d, %Y") %></td>
           </tr>
         <% end %>
-      </tbody>
     </table>
   </div>
 </div>
