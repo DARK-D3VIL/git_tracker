@@ -16,11 +16,10 @@ class MetricCalculate
   end
 
   def calculate
-    @merge_speed = cal_merge_speed
-    @churn_score = cal_churn_score
-    @code_quality = cal_code_quality
-    @response_to_feedback = cal_response_to_feedback
-    @employee.dev_score = cal_dev_met
+    @employee.merge_speed = cal_merge_speed
+    @employee.churn_score = cal_churn_score
+    @employee.code_quality = cal_code_quality
+    @employee.response_to_feedback = cal_response_to_feedback
 
     emp_github_id = @employee.github_id
     emp_reviews = []
@@ -45,25 +44,12 @@ class MetricCalculate
       end
     end
 
+    @employee.review_coverage = cal_review_coverage(relevant_prs)
+    @employee.response_time = cal_review_response_time(relevant_prs)
+    @employee.closing_speed = cal_engagement(relevant_prs,emp_reviews)
+    @employee.engagement_score = cal_closing_speed(relevant_prs)
 
-    @review_coverage = cal_review_coverage(relevant_prs)
-    @review_response_time = cal_review_response_time(relevant_prs)
-    @engagement = cal_engagement(relevant_prs,emp_reviews)
-    @closing_speed = cal_closing_speed(relevant_prs)
-    @employee.rev_score = cal_rev_met
     @employee.save!
-
-    {
-      "dev_score" => @employee.dev_score,
-      "rev_score" => @employee.rev_score,
-      "merge_speed" => @merge_speed,
-      "churn_score" => @churn_score,
-      "code_quality" => @code_quality,
-      "review_coverage" => @review_coverage,
-      "response_time" => @review_response_time,
-      "closing_speed" => @closing_speed,
-      "engagement_score" => @engagement
-    }
   end
 
   def cal_dev_met

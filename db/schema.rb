@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_04_16_045008) do
+ActiveRecord::Schema.define(version: 2025_04_21_073107) do
 
   create_table "developer_matrices", force: :cascade do |t|
     t.integer "pr_id"
@@ -27,6 +27,14 @@ ActiveRecord::Schema.define(version: 2025_04_16_045008) do
     t.float "rev_score", default: 0.0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.float "merge_speed", default: 0.0
+    t.float "churn_score", default: 0.0
+    t.float "code_quality", default: 0.0
+    t.float "review_coverage", default: 0.0
+    t.float "response_time", default: 0.0
+    t.float "closing_speed", default: 0.0
+    t.float "engagement_score", default: 0.0
+    t.float "response_to_feedback", default: 0.0
   end
 
   create_table "pull_requests", force: :cascade do |t|
