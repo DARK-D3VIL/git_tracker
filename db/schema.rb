@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_04_21_073107) do
+ActiveRecord::Schema.define(version: 2025_04_22_191510) do
 
   create_table "developer_matrices", force: :cascade do |t|
     t.integer "pr_id"
@@ -35,6 +35,14 @@ ActiveRecord::Schema.define(version: 2025_04_21_073107) do
     t.float "closing_speed", default: 0.0
     t.float "engagement_score", default: 0.0
     t.float "response_to_feedback", default: 0.0
+  end
+
+  create_table "metric_ranges", force: :cascade do |t|
+    t.string "metric_name"
+    t.float "min"
+    t.float "max"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "pull_requests", force: :cascade do |t|

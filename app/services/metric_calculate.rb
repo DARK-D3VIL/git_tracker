@@ -52,9 +52,62 @@ class MetricCalculate
     @employee.save!
   end
 
+  def calculate_and_normalize
+    calculate
+  
+    metric_names = [
+      :merge_speed,
+      :churn_score,
+      :code_quality,
+      :review_coverage,
+      :response_time,
+      :closing_speed,
+      :engagement_score,
+      :response_to_feedback
+    ]
+  
+    metric_names.each do |metric|
+      range = MetricRange.find_by(metric_name: metric)
+      if range.nil? || range.min.nil? || range.max.nil?
+        @employee[metric] = 0.0
+        next
+      end
+  
+      min = range.min.to_f
+      max = range.max.to_f
+      raw_val = @employee[metric].to_f
+      normalized = 0.0
+  
+      if max > min && raw_val.finite? && min.finite? && max.finite?
+        normalized = ((raw_val - min) / (max - min)) * 100
+      end
+  
+      @employee[metric] = [[normalized, 100].min, 0].max if normalized.finite?
+    end
+  
+    dev_score = 0.0
+    rev_score = 0.0
+  
+    dev_score += 0.15 * (@employee.churn_score.to_f / 100.0)
+    dev_score += 0.30 * (@employee.code_quality.to_f / 100.0)
+    dev_score += 0.30 * (1 - @employee.merge_speed.to_f / 100.0) if @employee.merge_speed.to_f > 0
+    dev_score += 0.25 * (1 - @employee.response_to_feedback.to_f / 100.0) if @employee.response_to_feedback.to_f > 0
+  
+    rev_score += 0.25 * (@employee.review_coverage.to_f / 100.0)
+    rev_score += 0.25 * (@employee.engagement_score.to_f / 100.0)
+    rev_score += 0.30 * (1 - @employee.closing_speed.to_f / 100.0) if @employee.closing_speed.to_f > 0
+    rev_score += 0.20 * (1 - @employee.response_time.to_f / 100.0) if @employee.response_time.to_f > 0
+  
+    @employee.dev_score = (dev_score * 100).round(2)
+    @employee.rev_score = (rev_score * 100).round(2)
+  
+    @employee.save!
+  end
+  
+  
   def cal_churn_score
     if @developer_matrices.empty?
-      return 0
+      return nil
     end
 
     pr_ids = []
@@ -72,7 +125,7 @@ class MetricCalculate
     end
 
     if cnt==0
-      return 0
+      return nil
     end
 
     total_loc.to_f/cnt
@@ -81,7 +134,7 @@ class MetricCalculate
 
   def cal_code_quality
     if @developer_matrices.empty?
-      return 0
+      return nil
     end
 
     pr_ids = []
@@ -107,13 +160,13 @@ class MetricCalculate
 
   def cal_merge_speed
     if @dev_pr.empty?
-      return 0
+      return nil
     end
 
     merged_prs = @dev_pr.where.not(pr_merged_at: nil)
 
     if merged_prs.empty?
-      return 0
+      return nil
     end
 
     total = 0
@@ -136,7 +189,7 @@ class MetricCalculate
 
     @dev_rev = @reviews.where(pr_id: pr_ids)
     if @dev_rev.empty?
-      return 0
+      return nil
     end
     total = 0
     @dev_rev.each do |rev|
@@ -149,7 +202,7 @@ class MetricCalculate
 
   def cal_review_coverage(relevant_prs)
     if relevant_prs.empty?
-      return 0
+      return nil
     end
     total_loc = 0
     relevant_prs.each do |pr|
@@ -157,7 +210,7 @@ class MetricCalculate
     end
 
     if relevant_prs.size == 0
-      return 0
+      return nil
     end
 
     total_loc / relevant_prs.size.to_f
@@ -165,7 +218,7 @@ class MetricCalculate
 
   def cal_review_response_time(relevant_prs)
     if relevant_prs.empty?
-      return 0
+      return nil
     end
     total = 0
     relevant_prs.each do |pr|
@@ -181,7 +234,7 @@ class MetricCalculate
     end
 
     if relevant_prs.size == 0
-      return 0
+      return nil
     end
 
     total / relevant_prs.size.to_f
@@ -189,7 +242,7 @@ class MetricCalculate
 
   def cal_engagement(relevant_prs,emp_reviews)
     if emp_reviews.empty?
-      return 0
+      return nil
     end
     feedback_cnt = 0
     for rev in emp_reviews
@@ -204,7 +257,7 @@ class MetricCalculate
 
   def cal_closing_speed(relevant_prs)
     if relevant_prs.empty?
-      return 0
+      return nil
     end
 
     total = 0
@@ -222,7 +275,7 @@ class MetricCalculate
     end
 
     if cnt == 0
-      return 0
+      return nil
     end
 
     total / cnt.to_f

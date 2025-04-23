@@ -1,0 +1,2 @@
+class MetricRange < ApplicationRecord
+end

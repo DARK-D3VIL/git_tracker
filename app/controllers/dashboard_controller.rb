@@ -1,19 +1,20 @@
 class DashboardController < ApplicationController
   before_action :authenticate_user!
-  def index
-    @employees = Employee.all
-    pull_requests = PullRequest.all
-    reviews = Review.all
-    dev_matrices = DeveloperMatrix.all
-   
-    time_range = nil
-    if index_params[:range].present?
-      if index_params[:range] == "7days"
-        time_range = Time.current - 7.days 
-      elsif index_params[:range] == "30days"
-        time_range = Time.current - 30.days
-      end
+  before_action :load_data
+  def index   
+    start_date = 1.year.ago
+    end_date = Time.current
+
+    if params[:start_date].present?
+      start_date = index_params[:start_date].to_datetime
     end
+
+    if params[:end_date].present?
+      end_date = index_params[:end_date].to_datetime
+    end
+
+    puts start_date
+    puts end_date
 
     status = "closed"
     if index_params[:status].present? && index_params[:status] == "all"
@@ -25,88 +26,49 @@ class DashboardController < ApplicationController
       sort_by = index_params[:sort_by]
     end
 
-    if time_range.present?
-      pull_requests = pull_requests.where("pr_created_at >= ?", time_range)
-      reviews = reviews.where("rev_created_at >= ?", time_range)
-    end
+    @pull_requests = @pull_requests.where(pr_created_at: start_date..end_date)
+    @reviews = @reviews.where(rev_created_at: start_date..end_date)
 
     if status == "closed"
-      pull_requests = pull_requests.where(status: status)
+      @pull_requests = @pull_requests.where(status: status)
     end
 
     if index_params[:query].present?
       query = index_params[:query]&.gsub(/[[:space:]]/, '').downcase
-      @employees = Employee.where("LOWER(name) LIKE ?", "%#{query}%")
+      @employees = @employees.where("LOWER(name) LIKE ?", "%#{query}%")
     end
 
     if filters_changed?
-      NormalisedMetricService.new(@employees, reviews, dev_matrices, pull_requests).normalize
+      NormalisedMetricService.new(@employees, @reviews, @dev_matrices, @pull_requests).normalize
       update_filters
     end
     
     @employees = @employees.sort_by(&sort_by.to_sym).reverse
   end
 
-  def show
-    employees = Employee.all
-    pull_requests = PullRequest.all
-    reviews = Review.all
-    dev_matrices = DeveloperMatrix.all
-
-    time_range = nil
-    if show_params[:range].present?
-      if show_params[:range] == "7days"
-        time_range = Time.current - 7.days 
-      elsif show_params[:range] == "30days"
-        time_range = Time.current - 30.days
-      end
-    end
-
-    status = "closed"
-    if show_params[:status].present? && show_params[:status] == "all"
-      status = show_params[:status]
-    end
-
-    if time_range.present?
-      pull_requests = pull_requests.where("pr_created_at >= ?", time_range)
-      reviews = reviews.where("rev_created_at >= ?", time_range)
-    end
-
-    if status == "closed"
-      pull_requests = pull_requests.where(status: status)
-    end
-
-    if filters_changed?
-      NormalisedMetricService.new(employees, reviews, dev_matrices, pull_requests).normalize
-      update_filters
-    end
-
-    @employee = Employee.find(params[:id])
-  end
-
   def raw
-    @pull_requests = PullRequest.all
-    @reviews = Review.all
-    @employees = Employee.all
-    @dev_matrices = DeveloperMatrix.all
   end
 
   private
 
   def filters_changed?
-    params[:range] != session[:range] || params[:status] != session[:status]
+    params[:start_date] != session[:start_date] || params[:status] != session[:status] || params[:end_date] != session[:end_date]
   end
 
   def update_filters
-    session[:range] = params[:range]
+    session[:start_date] = params[:start_date]
+    session[:end_date] = params[:end_date]
     session[:status] = params[:status]
   end
 
   def index_params
-    params.permit(:range, :status, :sort_by, :query)
+    params.permit(:end_date, :start_date, :status, :sort_by, :query)
   end
 
-  def show_params
-    params.permit(:range, :status)
+  def load_data
+    @pull_requests = PullRequest.all
+    @reviews = Review.all
+    @employees = Employee.all
+    @dev_matrices = DeveloperMatrix.all
   end
 end

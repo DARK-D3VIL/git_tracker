@@ -7,19 +7,6 @@ class NormalisedMetricService
   end
 
   def normalize
-    for emp in @employees
-      calculator = MetricCalculate.new(emp, @reviews, @developer_matrices, @pull_requests)
-      calculator.calculate
-    end
-
-    min_max_values = get_min_max_values
-
-    normalize_metrices(min_max_values)
-
-    calculate_final_scores
-  end
-
-  def get_min_max_values
     metric_names = [
       :merge_speed,
       :churn_score,
@@ -31,14 +18,40 @@ class NormalisedMetricService
       :response_to_feedback
     ]
 
+    for emp in @employees
+      calculator = MetricCalculate.new(emp, @reviews, @developer_matrices, @pull_requests)
+      calculator.calculate
+    end
+
+    update_min_max_values(metric_names)
+
+
+    normalize_metrices(metric_names)
+
+    calculate_final_scores
+  end
+
+  def update_min_max_values(metric_names)
     min_max = {}
     metric_names.each do |metric|
       values = []
       for emp in @employees
         values.append(emp[metric].to_f)
       end
-      min_value = values.min
+      min_value = values.select { |v| v > 0 }.min
       max_value = values.max
+
+      range = MetricRange.find_or_initialize_by(metric_name: metric.to_s)
+
+      if min_value && (range.min.nil? || min_value < range.min)
+        range.min = min_value
+      end
+
+      if max_value && (range.max.nil? || max_value > range.max)
+        range.max = max_value
+      end
+
+      range.save!
 
       min_max[metric] = [min_value,max_value]
     end
@@ -46,22 +59,29 @@ class NormalisedMetricService
     min_max
   end
 
-  def normalize_metrices(min_max)
-    for emp in @employees
-      for metric in  min_max.keys
-        min = min_max[metric][0]
-        max = min_max[metric][1]
+  def normalize_metrices(metric_names)
+    @employees.each do |emp|
+      metric_names.each do |metric|
+        range = MetricRange.find_by(metric_name: metric.to_s)
+        
+        if range.nil? || range.min.nil? || range.max.nil?
+          emp[metric] = 0
+          next
+        end
+    
+        min = range.min.to_f
+        max = range.max.to_f
         raw_val = emp[metric].to_f
         normalized = 0.0
-
-        if max > min
+  
+        if max > min && raw_val.finite? && min.finite? && max.finite?
           normalized = ((raw_val - min) / (max - min)) * 100
         end
 
-        emp[metric] = normalized
+        emp[metric] = [[normalized, 100].min, 0].max if normalized.finite?
       end
     end
-  end
+  end    
 
   def calculate_final_scores
     for emp in @employees
