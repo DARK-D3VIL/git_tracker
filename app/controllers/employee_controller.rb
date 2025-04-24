@@ -4,15 +4,13 @@ class EmployeeController < ApplicationController
     start_date = 1.year.ago.to_date
     end_date = Time.current
 
-    if params[:start_date].present?
+    if valid_date?(params[:start_date])
       start_date = permitted_params[:start_date].to_datetime
     end
 
-    if params[:end_date].present?
+    if valid_date?(params[:end_date])
       end_date = permitted_params[:end_date].to_datetime
     end
-    puts start_date
-    puts end_date
 
     status = "closed"
     if permitted_params[:status].present? && permitted_params[:status] == "all"
@@ -40,6 +38,16 @@ class EmployeeController < ApplicationController
   end
 
   private
+
+  def valid_date?(date_string)
+    if !date_string.present?
+      return false
+    end
+    Date&.parse(date_string)
+    true
+  rescue ArgumentError
+    false
+  end
 
   def filters_changed?
     params[:start_date] != session[:start_date] || params[:status] != session[:status] || params[:end_date] != session[:end_date]

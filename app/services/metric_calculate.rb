@@ -78,11 +78,13 @@ class MetricCalculate
       raw_val = @employee[metric].to_f
       normalized = 0.0
   
-      if max > min && raw_val.finite? && min.finite? && max.finite?
+      if raw_val.finite? && min.finite? && max.finite?
         normalized = ((raw_val - min) / (max - min)) * 100
       end
   
-      @employee[metric] = [[normalized, 100].min, 0].max if normalized.finite?
+      if normalized.finite?
+        @employee[metric] = [[normalized, 100].min, 0].max
+      end
     end
   
     dev_score = 0.0

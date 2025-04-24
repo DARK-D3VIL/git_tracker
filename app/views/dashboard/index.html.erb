@@ -20,10 +20,10 @@
                     <%= link_to emp.name, "https://github.com/#{emp.name}", target: "_blank", class: "text-decoration-none fw-semibold text-dark" %>
                   </td>
                   <td class="text-center fw-bold" style="color: <%= performance_color(emp.dev_score) %>;">
-                    <%= emp.dev_score.round(2) %>
+                    <%= emp.dev_score.zero? ? "NA" : emp.dev_score.round(2) %>
                   </td>
                   <td class="text-center fw-bold" style="color: <%= performance_color(emp.rev_score) %>;">
-                    <%= emp.rev_score.round(2) %>
+                    <%= emp.rev_score.zero? ? "NA" : emp.rev_score.round(2) %>
                   </td>
                   <td class="text-center">
                     <%= link_to "📊 View Metrics", employee_path(emp.id, start_date: params[:start_date], end_date: params[:end_date], status: params[:status]), class: "btn btn-outline-dark btn-sm rounded-pill" %>
@@ -42,7 +42,7 @@
     <div class="card shadow-lg border-0 rounded-4 sticky-top p-4 bg-white" style="top: 20px;">
       <h5 class="card-title text-center fw-semibold text-secondary mb-4">🔎 Filter Options</h5>
       
-      <%= form_with url: dashboard_index_path, method: :get, local: true do |f| %>
+      <%= form_with url: dashboard_index_path, method: :get do |f| %>
         <div class="mb-3">
           <%= f.label :start_date, "Start Date", class: "form-label fw-semibold" %>
           <%= f.date_field :start_date, value: params[:start_date] || 1.year.ago.to_date, class: "form-control rounded-pill" %>
