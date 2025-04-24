@@ -35,7 +35,7 @@
                </div>
                 <div class="tooltip-container">
                     <li class="list-group-item" style="color: <%= performance_color(100 - @employee.response_to_feedback) %>">
-                        Response to Feedback: <%= @employee.response_to_feedback.zero? ? "NA" : 100 - @employee.response_to_feedback.round(2)%>
+                        Response to Feedback: <%= @employee.response_to_feedback.zero? ? "NA" : (100 - @employee.response_to_feedback).round(2)%>
                         <span class="tooltip-text">Score Based on Frequency of addressing Feedback</span>
                     </li>
                 </div>
@@ -66,7 +66,7 @@
                 </div>
                 <div class="tooltip-container">
                     <li class="list-group-item" style="color: <%= performance_color(100 - @employee.closing_speed) %>">
-                        Closing Time Score: <%= @employee.closing_speed.zero? ? "NA" : 100 - @employee.closing_speed.round(2) %>
+                        Closing Time Score: <%= @employee.closing_speed.zero? ? "NA" : (100 - @employee.closing_speed).round(2) %>
                         <span class="tooltip-text">Score Based Time taken to close Issue/PRs</span>
                     </li>
                 </div>
@@ -78,7 +78,7 @@
                 </div>
                 <div class="tooltip-container">
                     <li class="list-group-item" style="color: <%= performance_color(100 - @employee.response_time) %>">
-                        Response Time Score: <%= @employee.response_time.zero? ? "NA" : 100 - @employee.response_time.round(2)%>
+                        Response Time Score: <%= @employee.response_time.zero? ? "NA" : (100 - @employee.response_time).round(2)%>
                         <span class="tooltip-text">Score Based on Time taken to respond to PRs</span>
                     </li>
                 </div>

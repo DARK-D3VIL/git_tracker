@@ -52,10 +52,12 @@ class DashboardController < ApplicationController
     if !date_string.present?
       return false
     end
-    Date&.parse(date_string)
-    true
-  rescue ArgumentError
-    false
+    begin
+      Date.parse(date_string)
+      true
+    rescue ArgumentError
+      false
+    end
   end
 
   def filters_changed?

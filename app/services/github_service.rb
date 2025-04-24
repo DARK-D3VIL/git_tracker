@@ -5,10 +5,10 @@ class GithubService
   def initialize
     @headers = {
       "Accept" => "application/vnd.github+json",
-      "Authorization" => "Bearer #{ENV['GITHUB_TOKEN']}",
+      "Authorization" => "Bearer #{Rails.application.credentials.github[:token]}",
       "X-GitHub-Api-Version" => "2022-11-28"
     }
-    @org = ENV['ORGANIZATION_NAME']
+    @org = Rails.application.credentials.github[:org]
   end
 
 
