@@ -10,18 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_04_22_191510) do
+ActiveRecord::Schema.define(version: 2025_04_25_055041) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "developer_matrices", force: :cascade do |t|
-    t.integer "pr_id"
-    t.string "github_id"
+    t.bigint "pr_id"
+    t.bigint "github_id"
     t.integer "LOC"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "employees", force: :cascade do |t|
-    t.string "github_id"
+    t.bigint "github_id"
     t.string "name"
     t.float "dev_score", default: 0.0
     t.float "rev_score", default: 0.0
@@ -46,7 +49,7 @@ ActiveRecord::Schema.define(version: 2025_04_22_191510) do
   end
 
   create_table "pull_requests", force: :cascade do |t|
-    t.integer "pr_id"
+    t.bigint "pr_id"
     t.datetime "pr_created_at"
     t.datetime "pr_closed_at"
     t.datetime "pr_merged_at"
@@ -59,14 +62,14 @@ ActiveRecord::Schema.define(version: 2025_04_22_191510) do
   end
 
   create_table "reviews", force: :cascade do |t|
-    t.string "github_id"
+    t.bigint "github_id"
     t.integer "review_id"
     t.datetime "rev_created_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "next_commit_at"
     t.string "review_node_id"
-    t.integer "pr_id"
+    t.bigint "pr_id"
   end
 
   create_table "users", force: :cascade do |t|

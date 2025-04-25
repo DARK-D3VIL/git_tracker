@@ -46,7 +46,7 @@ class GithubService
     repos = fetch_repos
   
     repos.each do |repo|
-      response = self.class.get("/repos/#{@org}/#{repo}/pulls", headers: @headers, query: { state: 'closed' })
+      response = self.class.get("/repos/#{@org}/#{repo}/pulls", headers: @headers, query: { state: 'all' })
   
       if response.success?
         response.parsed_response.each do |pull|
