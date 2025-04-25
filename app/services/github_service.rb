@@ -143,7 +143,11 @@ class GithubService
   
       commit_data = commit_response.parsed_response
   
-      github_id = commit_data["author"]["id"]
+      author = commit_data["author"]
+      if author.nil?
+        next
+      end
+      github_id = author["id"]
   
       employee = Employee.find_by(github_id: github_id)
       pull_request = PullRequest.find_by(pr_id: pr_id)

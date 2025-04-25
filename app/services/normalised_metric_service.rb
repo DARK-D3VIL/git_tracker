@@ -1,9 +1,12 @@
 class NormalisedMetricService
-  def initialize(employees, reviews, developer_matrices, pull_requests)
+  def initialize(employees, start_date, end_date, status)
     @employees = employees
-    @reviews = reviews
-    @developer_matrices = developer_matrices
-    @pull_requests = pull_requests
+    @pull_requests = PullRequest.where(pr_created_at: start_date..end_date)
+    @reviews = Review.where(rev_created_at: start_date..end_date)
+    if status == "closed"
+      @pull_requests = @pull_requests.where(status: status)
+    end
+    @developer_matrices = DeveloperMatrix
   end
 
   def normalize

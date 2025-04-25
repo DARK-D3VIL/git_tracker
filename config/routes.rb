@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get 'dashboard/index'
   devise_for :users
   root to: "dashboard#index"
+  post 'sync/start', to: 'sync#start', as: 'sync_start'
   get "employee/:id", to: "employee#index", as: "employee"
   get "dashboard/raw", to: "dashboard#raw", as: "dashboard_raw"
   match "*unmatched", to: "application#not_found", via: :all

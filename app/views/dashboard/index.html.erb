@@ -1,5 +1,8 @@
+<%# <div id="loader-wrapper">
+  <div id="loader"></div>
+  <p class="loader-text">Loading Dashboard...</p>
+</div> %>
 <div class="row g-4">
-  <!-- Employee Table Section -->
   <div class="col-lg-8">
     <div class="card shadow-lg rounded-4 border-0">
       <div class="card-body bg-light rounded-bottom-4">
@@ -26,7 +29,7 @@
                     <%= emp.rev_score.zero? ? "NA" : emp.rev_score.round(2) %>
                   </td>
                   <td class="text-center">
-                    <%= link_to "📊 View Metrics", employee_path(emp.id, start_date: params[:start_date], end_date: params[:end_date], status: params[:status]), class: "btn btn-outline-dark btn-sm rounded-pill" %>
+                    <%= link_to "📊 View Metrics", employee_path(emp.id, start_date: params[:start_date], end_date: params[:end_date], status: params[:status]), class: "btn btn-outline-dark btn-sm" %>
                   </td>
                 </tr>
               <% end %>
@@ -37,33 +40,32 @@
     </div>
   </div>
 
-  <!-- Filter Sidebar -->
   <div class="col-lg-4">
-    <div class="card shadow-lg border-0 rounded-4 sticky-top p-4 bg-white" style="top: 20px;">
+    <div class="card shadow-lg border-0 rounded-4 sticky-top p-4 bg-white" style="top: 80px;">
       <h5 class="card-title text-center fw-semibold text-secondary mb-4">🔎 Filter Options</h5>
       
       <%= form_with url: dashboard_index_path, method: :get do |f| %>
-        <div class="mb-3">
+        <div class="mb-4">
           <%= f.label :start_date, "Start Date", class: "form-label fw-semibold" %>
-          <%= f.date_field :start_date, value: params[:start_date] || 1.year.ago.to_date, class: "form-control rounded-pill" %>
+          <%= f.date_field :start_date, value: params[:start_date] || 1.year.ago.to_date, class: "form-control" %>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-4">
           <%= f.label :end_date, "End Date", class: "form-label fw-semibold" %>
-          <%= f.date_field :end_date, value: params[:end_date] || Date.current, class: "form-control rounded-pill" %>
+          <%= f.date_field :end_date, value: params[:end_date] || Date.current, class: "form-control" %>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-4">
           <%= f.label :status, "PR Status", class: "form-label fw-semibold" %>
-          <%= f.select :status, [["Closed", "closed"], ["All", "all"]], selected: params[:status], class: "form-select rounded-pill" %>
+          <%= f.select :status, [["Closed", "closed"], ["All", "all"]], selected: params[:status], class: "form-select" %>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-4">
           <%= f.label :sort_by, "Sort By", class: "form-label fw-semibold" %>
-          <%= f.select :sort_by, [["Dev Performance Score", "dev_score"], ["Review Performance Score", "rev_score"]], selected: params[:sort_by], class: "form-select rounded-pill" %>
+          <%= f.select :sort_by, [["Dev Performance Score", "dev_score"], ["Review Performance Score", "rev_score"]], selected: params[:sort_by], class: "form-select" %>
         </div>
 
-        <%= f.submit "Apply Filters", class: "btn btn-dark w-100 fw-semibold rounded-pill" %>
+        <%= f.submit "Apply Filters", class: "btn btn-dark w-100 fw-semibold" %>
       <% end %>
     </div>
   </div>

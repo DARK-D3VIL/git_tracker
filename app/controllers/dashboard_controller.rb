@@ -23,27 +23,23 @@ class DashboardController < ApplicationController
       sort_by = index_params[:sort_by]
     end
 
-    @pull_requests = @pull_requests.where(pr_created_at: start_date..end_date)
-    @reviews = @reviews.where(rev_created_at: start_date..end_date)
-
-    if status == "closed"
-      @pull_requests = @pull_requests.where(status: status)
+    if filters_changed?
+      NormalisedMetricService.new(@employees, start_date, end_date, status).normalize
+      update_filters
     end
 
     if index_params[:query].present?
       query = index_params[:query]&.gsub(/[[:space:]]/, '').downcase
       @employees = @employees.where("LOWER(name) LIKE ?", "%#{query}%")
     end
-
-    if filters_changed?
-      NormalisedMetricService.new(@employees, @reviews, @dev_matrices, @pull_requests).normalize
-      update_filters
-    end
     
     @employees = @employees.sort_by(&sort_by.to_sym).reverse
   end
 
   def raw
+    @pull_requests = PullRequest.all
+    @reviews = Review.all
+    @dev_matrices = DeveloperMatrix.all
   end
 
   private
@@ -75,9 +71,6 @@ class DashboardController < ApplicationController
   end
 
   def load_data
-    @pull_requests = PullRequest.all
-    @reviews = Review.all
     @employees = Employee.all
-    @dev_matrices = DeveloperMatrix.all
   end
 end
