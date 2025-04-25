@@ -1,6 +1,6 @@
 <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark shadow-sm">
   <div class="container-fluid px-4">
-    <%= link_to "🚀 Git Analyzer", root_path, class: "navbar-brand fw-bold fs-4 text-gradient" %>
+    <%= link_to "🚀 Git Analyzer", root_path, class: "navbar-brand fw-semibold fs-5 text-white" %>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
             aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -9,25 +9,33 @@
 
     <div class="collapse navbar-collapse" id="navbarContent">
       <% if user_signed_in? %>
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-3">
-          <li class="nav-item">
-            <%= link_to '📊 Dashboard', dashboard_index_path(start_date: session[:start_date], status: session[:status], end_date: session[:end_date]), class: "nav-link fw-semibold" %>
-          </li>
-          <li class="nav-item">
-            <%= link_to '🗂 Raw Data', dashboard_raw_path , class: "nav-link fw-semibold" %>
-          </li>
-        </ul>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-2">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-2">
+            <li class="nav-item">
+              <%= link_to '📊 Dashboard',
+                  dashboard_index_path(start_date: session[:start_date], status: session[:status], end_date: session[:end_date]),
+                  class: "nav-link small fw-medium #{controller_name == 'dashboard' && action_name == 'index' ? 'text-white fw-bold border-bottom border-white pb-1' : 'text-light'}" %>
+            </li>
 
-        <div class="d-flex align-items-center ms-auto gap-3">
+            <li class="nav-item">
+              <%= link_to '🗂 Raw Data',
+                  dashboard_raw_path,
+                  class: "nav-link small fw-medium #{controller_name == 'dashboard' && action_name == 'raw' ? 'text-white fw-bold border-bottom border-white pb-1' : 'text-light'}" %>
+            </li>
+          </ul>
+        </ul>
+        <div class="d-flex align-items-center ms-auto gap-2">
           <% if controller_name == 'dashboard' && action_name == 'index' %>
             <form class="d-flex align-items-center" role="search" action="<%= root_path %>" method="get">
-              <input class="form-control rounded-pill px-3 me-2 border-0 shadow-sm" type="search" name="query" placeholder="🔍 Search Employee" aria-label="Search">
-              <button class="btn btn-light rounded-pill px-4" type="submit">Search</button>
+              <input class="form-control form-control-sm me-2 shadow-sm" type="search" name="query" placeholder="🔍 Search" aria-label="Search">
+              <button class="btn btn-sm btn-outline-light fw-medium" type="submit">Search</button>
             </form>
           <% end %>
 
+          <%= button_to "🔄 Sync", sync_start_path, method: :post,
+                class: "btn btn-sm btn-outline-light fw-medium shadow-sm" %>
           <%= button_to "🚪 Sign Out", destroy_user_session_path, method: :delete,
-                class: "btn btn-outline-danger px-3 rounded-pill fw-semibold" %>
+                class: "btn btn-sm btn-outline-danger fw-medium shadow-sm" %>
         </div>
 
       <% else %>
@@ -36,8 +44,8 @@
         </ul>
 
         <div class="d-flex ms-auto align-items-center gap-2">
-          <%= link_to "🔐 Login", new_user_session_path, class: "btn btn-outline-light rounded-pill px-3 fw-semibold" %>
-          <%= link_to "📝 Sign Up", new_user_registration_path, class: "btn btn-primary rounded-pill px-3 fw-semibold" %>
+          <%= link_to "🔐 Login", new_user_session_path, class: "btn btn-sm btn-outline-light fw-medium shadow-sm" %>
+          <%= link_to "📝 Sign Up", new_user_registration_path, class: "btn btn-sm btn-primary fw-medium shadow-sm" %>
         </div>
       <% end %>
     </div>

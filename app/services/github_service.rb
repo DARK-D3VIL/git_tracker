@@ -5,10 +5,10 @@ class GithubService
   def initialize
     @headers = {
       "Accept" => "application/vnd.github+json",
-      "Authorization" => "Bearer #{ENV['GITHUB_TOKEN']}",
+      "Authorization" => "Bearer #{Rails.application.credentials.github[:token]}",
       "X-GitHub-Api-Version" => "2022-11-28"
     }
-    @org = ENV['ORGANIZATION_NAME']
+    @org = Rails.application.credentials.github[:org]
   end
 
 
@@ -143,7 +143,11 @@ class GithubService
   
       commit_data = commit_response.parsed_response
   
-      github_id = commit_data["author"]["id"]
+      author = commit_data["author"]
+      if author.nil?
+        next
+      end
+      github_id = author["id"]
   
       employee = Employee.find_by(github_id: github_id)
       pull_request = PullRequest.find_by(pr_id: pr_id)

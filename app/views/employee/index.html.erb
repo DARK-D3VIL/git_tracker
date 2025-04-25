@@ -1,87 +1,91 @@
-<div class="row g-4">
-  <div class="col-lg-8">
+<div class="text-center mb-4">
+  <h3 class="fw-bold text-uppercase"><%= @employee.name %></h3>
+  <p class="text-muted fst-italic">Performance Overview</p>
+</div>
+<div class="row equal-height-container">
+  <div class="col-lg-8 left-col">
     <div class="row g-4">
-      <!-- Developer Performance Card -->
-      <div class="col-md-6">
-        <div class="card shadow border-0 rounded-4">
+      <div class="col-md-6 d-flex">
+        <div class="card shadow border-0 rounded-4 equal-height w-100">
           <div class="card-header bg-dark text-white fw-semibold text-center rounded-top-4">
             Developer Performance Score
           </div>
           <div class="card-body">
             <ul class="list-group list-group-flush">
-                <div class="tooltip-container">
-                    <li class="list-group-item fw-semibold" style="color: <%= performance_color(@employee.dev_score) %>">
-                        Developer Score: <%= @employee.dev_score.zero? ? "NA" : @employee.dev_score.round(2)%>
-                        <span class="tooltip-text">Overall score based on development metrics</span>
-                    </li>
-                </div>
-                <div class="tooltip-container">
-                    <li class="list-group-item" style="color: <%= performance_color(100 - @employee.merge_speed) %>">
-                        Merge Time Score: <%= @employee.merge_speed.zero? ? "NA" : 100 - @employee.merge_speed.round(2)%>
-                        <span class="tooltip-text">Overall score based on development metrics</span>
-                    </li>
-                </div>
-                <div class="tooltip-container">
-                    <li class="list-group-item" style="color: <%= performance_color(@employee.churn_score) %>">
-                        Code Churn Score: <%= @employee.churn_score.zero? ? "NA" : @employee.churn_score.round(2) %>
-                        <span class="tooltip-text">Score Based on Amount of code written or deleted Per PR</span>
-                    </li>
-                </div>
-               <div class="tooltip-container">
-                    <li class="list-group-item" style="color: <%= performance_color(@employee.code_quality) %>">
-                        Code Quality Score: <%= @employee.code_quality.zero? ? "NA" : @employee.code_quality.round(2)%>
-                        <span class="tooltip-text">Quality score of submitted code</span>
-                    </li>
-               </div>
-                <div class="tooltip-container">
-                    <li class="list-group-item" style="color: <%= performance_color(100 - @employee.response_to_feedback) %>">
-                        Response to Feedback: <%= @employee.response_to_feedback.zero? ? "NA" : 100 - @employee.response_to_feedback.round(2)%>
-                        <span class="tooltip-text">Score Based on Frequency of addressing Feedback</span>
-                    </li>
-                </div>
+              <li class="list-group-item fw-bold fs-6 bg-light rounded-3 shadow-sm text-center border mb-2" style="color: <%= performance_color(@employee.dev_score) %>">
+                🌟 Developer Score: <%= @employee.dev_score.zero? ? "NA" : @employee.dev_score.round(2) %>
+                <div class="small text-muted mt-1">Overall score based on development metrics</div>
+              </li>
+              <div class="tooltip-container ps-2">
+                <li class="list-group-item" style="color: <%= performance_color(100 - @employee.merge_speed) %>">
+                  ➤ Merge Time Score: <%= @employee.merge_speed.zero? ? "NA" : 100 - @employee.merge_speed.round(2)%>
+                  <span class="tooltip-text">Speed of merging pull requests</span>
+                </li>
+              </div>
+              <div class="tooltip-container ps-2">
+                <li class="list-group-item" style="color: <%= performance_color(@employee.churn_score) %>">
+                  ➤ Code Churn Score: <%= @employee.churn_score.zero? ? "NA" : @employee.churn_score.round(2) %>
+                  <span class="tooltip-text">Code written or deleted per PR</span>
+                </li>
+              </div>
+              <div class="tooltip-container ps-2">
+                <li class="list-group-item" style="color: <%= performance_color(@employee.code_quality) %>">
+                  ➤ Code Quality Score: <%= @employee.code_quality.zero? ? "NA" : @employee.code_quality.round(2)%>
+                  <span class="tooltip-text">Quality of code committed</span>
+                </li>
+              </div>
+              <div class="tooltip-container ps-2">
+                <li class="list-group-item" style="color: <%= performance_color(100 - @employee.response_to_feedback) %>">
+                  ➤ Response to Feedback: <%= @employee.response_to_feedback.zero? ? "NA" : (100 - @employee.response_to_feedback).round(2)%>
+                  <span class="tooltip-text">Addressing peer reviews promptly</span>
+                </li>
+              </div>
+              <li class="list-group-item text-muted small text-center fst-italic border-top pt-2">
+                🔢 All scores are out of 100
+              </li>
             </ul>
           </div>
         </div>
       </div>
 
-      <!-- Reviewer Performance Card -->
-      <div class="col-md-6">
-        <div class="card shadow border-0 rounded-4">
+      <div class="col-md-6 d-flex">
+        <div class="card shadow border-0 rounded-4 equal-height w-100">
           <div class="card-header bg-dark text-white fw-semibold text-center rounded-top-4">
             Reviewer Performance Score
           </div>
           <div class="card-body">
             <ul class="list-group list-group-flush">
-                <div class="tooltip-container">
-                    <li class="list-group-item fw-semibold" style="color: <%= performance_color(@employee.rev_score) %>">
-                        Reviewer Score: <%= @employee.rev_score.zero? ? "NA" : @employee.rev_score.round(2)%>
-                        <span class="tooltip-text">Overall score based on review metrics</span>
-                    </li>
-                </div>
-                <div class="tooltip-container">
-                    <li class="list-group-item" style="color: <%= performance_color(@employee.review_coverage) %>">
-                        Review Coverage Score: <%= @employee.review_coverage.zero? ? "NA" : @employee.review_coverage.round(2)%>
-                        <span class="tooltip-text">Score Based on Extent of reviews provided on PRs</span>
-                    </li>
-                </div>
-                <div class="tooltip-container">
-                    <li class="list-group-item" style="color: <%= performance_color(100 - @employee.closing_speed) %>">
-                        Closing Time Score: <%= @employee.closing_speed.zero? ? "NA" : 100 - @employee.closing_speed.round(2) %>
-                        <span class="tooltip-text">Score Based Time taken to close Issue/PRs</span>
-                    </li>
-                </div>
-                <div class="tooltip-container">
-                    <li class="list-group-item" style="color: <%= performance_color(@employee.engagement_score) %>">
-                        Engagement Score: <%= @employee.engagement_score.zero? ? "NA" : @employee.engagement_score.round(2)%>
-                        <span class="tooltip-text">Score Based on Engagement in code discussions and reviews</span>
-                    </li>
-                </div>
-                <div class="tooltip-container">
-                    <li class="list-group-item" style="color: <%= performance_color(100 - @employee.response_time) %>">
-                        Response Time Score: <%= @employee.response_time.zero? ? "NA" : 100 - @employee.response_time.round(2)%>
-                        <span class="tooltip-text">Score Based on Time taken to respond to PRs</span>
-                    </li>
-                </div>
+              <li class="list-group-item fw-bold fs-6 bg-light rounded-3 shadow-sm text-center border mb-2" style="color: <%= performance_color(@employee.rev_score) %>">
+                🌟 Reviewer Score: <%= @employee.rev_score.zero? ? "NA" : @employee.rev_score.round(2) %>
+                <div class="small text-muted mt-1">Overall score based on review metrics</div>
+              </li>
+              <div class="tooltip-container ps-2">
+                <li class="list-group-item" style="color: <%= performance_color(@employee.review_coverage) %>">
+                  ➤ Review Coverage Score: <%= @employee.review_coverage.zero? ? "NA" : @employee.review_coverage.round(2)%>
+                  <span class="tooltip-text">Extent of reviews on pull requests</span>
+                </li>
+              </div>
+              <div class="tooltip-container ps-2">
+                <li class="list-group-item" style="color: <%= performance_color(100 - @employee.closing_speed) %>">
+                  ➤ Closing Time Score: <%= @employee.closing_speed.zero? ? "NA" : (100 - @employee.closing_speed).round(2) %>
+                  <span class="tooltip-text">Time taken to close issues and PRs</span>
+                </li>
+              </div>
+              <div class="tooltip-container ps-2">
+                <li class="list-group-item" style="color: <%= performance_color(@employee.engagement_score) %>">
+                  ➤ Engagement Score: <%= @employee.engagement_score.zero? ? "NA" : @employee.engagement_score.round(2)%>
+                  <span class="tooltip-text">Involvement in discussions and code reviews</span>
+                </li>
+              </div>
+              <div class="tooltip-container ps-2">
+                <li class="list-group-item" style="color: <%= performance_color(100 - @employee.response_time) %>">
+                  ➤ Response Time Score: <%= @employee.response_time.zero? ? "NA" : (100 - @employee.response_time).round(2)%>
+                  <span class="tooltip-text">Speed of responding to PRs</span>
+                </li>
+              </div>
+              <li class="list-group-item text-muted small text-center fst-italic border-top pt-2">
+                🔢 All scores are out of 100
+              </li>
             </ul>
           </div>
         </div>
@@ -89,9 +93,8 @@
     </div>
   </div>
 
-  <!-- Filter Sidebar -->
-  <div class="col-lg-4">
-    <div class="card shadow border-0 rounded-4 p-4 sticky-top" style="top: 20px;">
+  <div class="col-lg-4 d-flex right-col">
+    <div class="card shadow border-0 rounded-4 p-4 equal-height w-100">
       <h5 class="card-title text-center mb-4 fw-semibold">Filter Options</h5>
       <%= form_with url: employee_path, method: :get do |f| %>
         <div class="mb-3">
