@@ -1,9 +1,6 @@
-<%# <div id="loader-wrapper">
-  <div id="loader"></div>
-  <p class="loader-text">Loading Dashboard...</p>
-</div> %>
 <div class="row g-4">
-  <div class="col-lg-8">
+  <!-- Left Column - Table -->
+  <div class="col-12 col-lg-8">
     <div class="card shadow-lg rounded-4 border-0">
       <div class="card-body bg-light rounded-bottom-4">
         <div class="table-responsive">
@@ -40,8 +37,9 @@
     </div>
   </div>
 
-  <div class="col-lg-4">
-    <div class="card shadow-lg border-0 rounded-4 sticky-top p-4 bg-white" style="top: 80px;">
+  <!-- Right Column - Filter Options -->
+  <div class="col-12 col-lg-4">
+    <div class="card shadow-lg border-0 rounded-4 p-4 bg-white sticky-top" style="top: 80px;">
       <h5 class="card-title text-center fw-semibold text-secondary mb-4">🔎 Filter Options</h5>
       
       <%= form_with url: dashboard_index_path, method: :get do |f| %>

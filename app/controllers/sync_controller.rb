@@ -1,4 +1,5 @@
 class SyncController < ApplicationController
+  before_action :authenticate_user!
   def start
     DataSyncJob.perform_later
     flash[:notice] = "Data Sync Job started"
