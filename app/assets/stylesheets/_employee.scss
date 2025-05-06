@@ -1,0 +1,66 @@
+// Place all the styles related to the Employee controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+.tooltip-container {
+  position: relative;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 6px 10px;
+  border-radius: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 10px;
+  font-size: 0.75rem;
+}
+
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+.equal-height-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+
+.equal-height-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.equal-height-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.equal-height {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.full-height {
+  height: 100%;
+}
+
+@media (min-width: 992px) {
+  .left-col,
+  .right-col {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .left-col > .row {
+    flex: 1;
+  }
+}

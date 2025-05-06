@@ -1,0 +1,70 @@
+<div class="row g-4">
+  <!-- Left Column - Table -->
+  <div class="col-12 col-lg-8">
+    <div class="card shadow-lg rounded-4 border-0">
+      <div class="card-body bg-light rounded-bottom-4">
+        <div class="table-responsive">
+          <table class="table table-hover table-bordered align-middle mb-0">
+            <thead class="table-light text-center">
+              <tr>
+                <th>Name</th>
+                <th>Dev Performance</th>
+                <th>Review Performance</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @employees.each do |emp| %>
+                <tr>
+                  <td>
+                    <%= link_to emp.name, "https://github.com/#{emp.name}", target: "_blank", class: "text-decoration-none fw-semibold text-dark" %>
+                  </td>
+                  <td class="text-center fw-bold" style="color: <%= performance_color(emp.dev_score) %>;">
+                    <%= emp.dev_score.zero? ? "NA" : emp.dev_score.round(2) %>
+                  </td>
+                  <td class="text-center fw-bold" style="color: <%= performance_color(emp.rev_score) %>;">
+                    <%= emp.rev_score.zero? ? "NA" : emp.rev_score.round(2) %>
+                  </td>
+                  <td class="text-center">
+                    <%= link_to "📊 View Metrics", employee_path(emp.id, start_date: params[:start_date], end_date: params[:end_date], status: params[:status]), class: "btn btn-outline-dark btn-sm" %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Column - Filter Options -->
+  <div class="col-12 col-lg-4">
+    <div class="card shadow-lg border-0 rounded-4 p-4 bg-white sticky-top" style="top: 80px;">
+      <h5 class="card-title text-center fw-semibold text-secondary mb-4">🔎 Filter Options</h5>
+      
+      <%= form_with url: dashboard_index_path, method: :get do |f| %>
+        <div class="mb-4">
+          <%= f.label :start_date, "Start Date", class: "form-label fw-semibold" %>
+          <%= f.date_field :start_date, value: params[:start_date] || 1.year.ago.to_date, class: "form-control" %>
+        </div>
+
+        <div class="mb-4">
+          <%= f.label :end_date, "End Date", class: "form-label fw-semibold" %>
+          <%= f.date_field :end_date, value: params[:end_date] || Date.current, class: "form-control" %>
+        </div>
+
+        <div class="mb-4">
+          <%= f.label :status, "PR Status", class: "form-label fw-semibold" %>
+          <%= f.select :status, [["Closed", "closed"], ["All", "all"]], selected: params[:status], class: "form-select" %>
+        </div>
+
+        <div class="mb-4">
+          <%= f.label :sort_by, "Sort By", class: "form-label fw-semibold" %>
+          <%= f.select :sort_by, [["Dev Performance Score", "dev_score"], ["Review Performance Score", "rev_score"]], selected: params[:sort_by], class: "form-select" %>
+        </div>
+
+        <%= f.submit "Apply Filters", class: "btn btn-dark w-100 fw-semibold" %>
+      <% end %>
+    </div>
+  </div>
+</div>

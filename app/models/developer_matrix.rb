@@ -1,0 +1,6 @@
+class DeveloperMatrix < ApplicationRecord
+  validates :github_id, presence: true
+  validates :pr_id, presence: true
+  belongs_to :employee, foreign_key: :github_id, primary_key: :github_id
+  belongs_to :pull_request ,foreign_key: :pr_id, primary_key: :pr_id
+end
