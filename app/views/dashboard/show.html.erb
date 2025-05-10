@@ -1,0 +1,22 @@
+<h2><%= @employee.name %>'s Metrics</h2>
+
+<%= form_with url: dashboard_show_path(@employee.id), method: :get do |f| %>
+  <%= f.label :range, "Time Range:" %>
+  <%= f.select :range, [["All Time", "all"], ["Last 7 Days", "7days"], ["Last 30 Days", "30days"]], selected: @range %>
+
+  <%= f.label :status, "PR Status:" %>
+  <%= f.select :status, [["All", "all"], ["Closed", "closed"]], selected: @status %>
+
+  <%= f.submit "Apply Filters" %>
+<% end %>
+
+<br>
+
+<h3>Metrics:</h3>
+<ul>
+  <% @metrics.each do |key, value| %>
+    <li><%= key.to_s.humanize %>: <%= value.round(2) %></li>
+  <% end %>
+</ul>
+
+<%= link_to "Back to Dashboard", dashboard_index_path, class: "btn btn-secondary" %>

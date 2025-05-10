@@ -20,8 +20,8 @@ set :output, "./log/cron.log"
 env :PATH, ENV['PATH']
 
 every 1.day do
-  # runner "Puts 'Hello World'"
-  rake 'batch:sync_data', environment: 'development'
+  runner ""
+  # rake 'batch:sync_data', environment: 'development'
 end
 
 
