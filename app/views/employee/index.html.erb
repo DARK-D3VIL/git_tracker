@@ -1,0 +1,120 @@
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="row g-4">
+      <!-- Developer Performance Card -->
+      <div class="col-md-6">
+        <div class="card shadow border-0 rounded-4">
+          <div class="card-header bg-dark text-white fw-semibold text-center rounded-top-4">
+            Developer Performance Score
+          </div>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <div class="tooltip-container">
+                    <li class="list-group-item fw-semibold" style="color: <%= performance_color(@employee.dev_score) %>">
+                        Developer Score: <%= @employee.dev_score.zero? ? "NA" : @employee.dev_score.round(2)%>
+                        <span class="tooltip-text">Overall score based on development metrics</span>
+                    </li>
+                </div>
+                <div class="tooltip-container">
+                    <li class="list-group-item" style="color: <%= performance_color(100 - @employee.merge_speed) %>">
+                        Merge Time Score: <%= @employee.merge_speed.zero? ? "NA" : 100 - @employee.merge_speed.round(2)%>
+                        <span class="tooltip-text">Overall score based on development metrics</span>
+                    </li>
+                </div>
+                <div class="tooltip-container">
+                    <li class="list-group-item" style="color: <%= performance_color(@employee.churn_score) %>">
+                        Code Churn Score: <%= @employee.churn_score.zero? ? "NA" : @employee.churn_score.round(2) %>
+                        <span class="tooltip-text">Score Based on Amount of code written or deleted Per PR</span>
+                    </li>
+                </div>
+               <div class="tooltip-container">
+                    <li class="list-group-item" style="color: <%= performance_color(@employee.code_quality) %>">
+                        Code Quality Score: <%= @employee.code_quality.zero? ? "NA" : @employee.code_quality.round(2)%>
+                        <span class="tooltip-text">Quality score of submitted code</span>
+                    </li>
+               </div>
+                <div class="tooltip-container">
+                    <li class="list-group-item" style="color: <%= performance_color(100 - @employee.response_to_feedback) %>">
+                        Response to Feedback: <%= @employee.response_to_feedback.zero? ? "NA" : 100 - @employee.response_to_feedback.round(2)%>
+                        <span class="tooltip-text">Score Based on Frequency of addressing Feedback</span>
+                    </li>
+                </div>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reviewer Performance Card -->
+      <div class="col-md-6">
+        <div class="card shadow border-0 rounded-4">
+          <div class="card-header bg-dark text-white fw-semibold text-center rounded-top-4">
+            Reviewer Performance Score
+          </div>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <div class="tooltip-container">
+                    <li class="list-group-item fw-semibold" style="color: <%= performance_color(@employee.rev_score) %>">
+                        Reviewer Score: <%= @employee.rev_score.zero? ? "NA" : @employee.rev_score.round(2)%>
+                        <span class="tooltip-text">Overall score based on review metrics</span>
+                    </li>
+                </div>
+                <div class="tooltip-container">
+                    <li class="list-group-item" style="color: <%= performance_color(@employee.review_coverage) %>">
+                        Review Coverage Score: <%= @employee.review_coverage.zero? ? "NA" : @employee.review_coverage.round(2)%>
+                        <span class="tooltip-text">Score Based on Extent of reviews provided on PRs</span>
+                    </li>
+                </div>
+                <div class="tooltip-container">
+                    <li class="list-group-item" style="color: <%= performance_color(100 - @employee.closing_speed) %>">
+                        Closing Time Score: <%= @employee.closing_speed.zero? ? "NA" : 100 - @employee.closing_speed.round(2) %>
+                        <span class="tooltip-text">Score Based Time taken to close Issue/PRs</span>
+                    </li>
+                </div>
+                <div class="tooltip-container">
+                    <li class="list-group-item" style="color: <%= performance_color(@employee.engagement_score) %>">
+                        Engagement Score: <%= @employee.engagement_score.zero? ? "NA" : @employee.engagement_score.round(2)%>
+                        <span class="tooltip-text">Score Based on Engagement in code discussions and reviews</span>
+                    </li>
+                </div>
+                <div class="tooltip-container">
+                    <li class="list-group-item" style="color: <%= performance_color(100 - @employee.response_time) %>">
+                        Response Time Score: <%= @employee.response_time.zero? ? "NA" : 100 - @employee.response_time.round(2)%>
+                        <span class="tooltip-text">Score Based on Time taken to respond to PRs</span>
+                    </li>
+                </div>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter Sidebar -->
+  <div class="col-lg-4">
+    <div class="card shadow border-0 rounded-4 p-4 sticky-top" style="top: 20px;">
+      <h5 class="card-title text-center mb-4 fw-semibold">Filter Options</h5>
+      <%= form_with url: employee_path, method: :get do |f| %>
+        <div class="mb-3">
+          <%= f.label :start_date, "Start Date:", class: "form-label fw-semibold" %>
+          <%= f.date_field :start_date, value: params[:start_date] || 1.year.ago.to_date, class: "form-control" %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :end_date, "End Date:", class: "form-label fw-semibold" %>
+          <%= f.date_field :end_date, value: params[:end_date] || Date.current, class: "form-control" %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :status, "PR Status:", class: "form-label fw-semibold" %>
+          <%= f.select :status, [["Closed", "closed"], ["All", "all"]], selected: params[:status], class: "form-select" %>
+        </div>
+
+        <%= f.submit "Apply", class: "btn btn-dark w-100" %>
+      <% end %>
+
+      <div class="text-center mt-3">
+        <%= link_to "Back to Dashboard", dashboard_index_path(start_date: params[:start_date], end_date: params[:end_date], status: params[:status]), class: "btn btn-outline-dark w-100" %>
+      </div>
+    </div>
+  </div>
+</div>
